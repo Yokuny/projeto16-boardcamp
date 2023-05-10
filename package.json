@@ -1,0 +1,35 @@
+{
+  "name": "projeto16-boardcamp",
+  "version": "1.0.0",
+  "description": "sql application for back end project",
+  "main": "./src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "run": "nodemon ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yokuny/projeto16-boardcamp.git"
+  },
+  "keywords": [
+    "sql",
+    "nodejs",
+    "express",
+    "joi"
+  ],
+  "author": "driven",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yokuny/projeto16-boardcamp/issues"
+  },
+  "homepage": "https://github.com/Yokuny/projeto16-boardcamp#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.9.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
