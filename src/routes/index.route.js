@@ -1,10 +1,12 @@
 import { Router } from "express";
-import first from "./first.route.js";
-import second from "./second.route.js";
+import games from "./games.route.js";
+import customers from "./customers.route.js";
+import rentals from "./rentals.route.js";
 
 const router = Router();
 
-router.use(first);
-router.use(second);
+router.use(games);
+router.use(customers);
+router.use(customers);
 
 export default router;
