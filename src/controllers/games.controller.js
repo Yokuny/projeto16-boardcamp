@@ -1,33 +1,30 @@
-const games = [
-  {
-    id: 1,
-    name: "Banco Imobiliário",
-    image: "http://",
-    stockTotal: 3,
-    pricePerDay: 1500,
-  },
-  {
-    id: 2,
-    name: "Detetive",
-    image: "http://",
-    stockTotal: 1,
-    pricePerDay: 2500,
-  },
-];
+import db from "../database/database.connection.js";
 
 const getGames = async (req, res) => {
-  res.status(200).send(games);
-};
-
-const reqBody = {
-  name: "Banco Imobiliário",
-  image: "http://www.imagem.com.br/banco_imobiliario.jpg",
-  stockTotal: 3,
-  pricePerDay: 1500,
+  try {
+    const response = await db.query(`SELECT * FROM games;`);
+    res.send(response.rows);
+  } catch {
+    res.sendStatus(404);
+  }
 };
 
 const postGame = async (req, res) => {
-  res.status(201).send(reqBody);
+  const { name, image, stockTotal, pricePerDay } = req.body;
+  try {
+    const { rows } = await db.query("SELECT * FROM games WHERE name = $1 LIMIT 1;", [name]);
+    console.log(rows);
+    if (rows.length) return res.sendStatus(409);
+
+    db.query(
+      `INSERT INTO games (name, image, "stockTotal", "pricePerDay")
+      VALUES ($1, $2, $3, $4);`,
+      [name, image, stockTotal, pricePerDay]
+    );
+    res.sendStatus(201);
+  } catch {
+    res.sendStatus(500);
+  }
 };
 
 export default { getGames, postGame };

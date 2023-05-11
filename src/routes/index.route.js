@@ -7,6 +7,6 @@ const router = Router();
 
 router.use(games);
 router.use(customers);
-router.use(customers);
+router.use(rentals);
 
 export default router;

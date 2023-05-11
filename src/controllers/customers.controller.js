@@ -1,3 +1,5 @@
+import db from "../database/database.connection.js";
+
 const customersToDisplay = [
   {
     id: 1,
@@ -16,7 +18,8 @@ const customersToDisplay = [
 ];
 
 export const getCustomers = async (req, res) => {
-  res.status(200).send(customersToDisplay);
+  const a = db.query("SELECT * FROM customers");
+  res.status(200).send(a);
 };
 
 const customerToFind = {
