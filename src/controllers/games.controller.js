@@ -13,9 +13,7 @@ const postGame = async (req, res) => {
   const { name, image, stockTotal, pricePerDay } = req.body;
   try {
     const { rows } = await db.query("SELECT * FROM games WHERE name = $1 LIMIT 1;", [name]);
-    console.log(rows);
     if (rows.length) return res.sendStatus(409);
-
     db.query(
       `INSERT INTO games (name, image, "stockTotal", "pricePerDay")
       VALUES ($1, $2, $3, $4);`,

@@ -1,4 +1,4 @@
-import imageCheckSchema from "../schemas/imageCheck.schema.js";
+import imageCheckSchema from "../schemas/image.schema.js";
 
 const imageValidate = () => {
   return async (req, res, next) => {
