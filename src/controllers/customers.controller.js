@@ -5,8 +5,7 @@ export const getCustomers = async (req, res) => {
     const { rows } = await db.query("SELECT * FROM customers");
     if (rows) return res.status(200).send(rows);
   } catch (err) {
-    console.log("<<<<<<<< erro");
-    console.log(err);
+    return res.sendStatus(err);
   }
 };
 
@@ -17,8 +16,7 @@ export const getCustomer = async (req, res) => {
     if (rows.length) return res.status(200).send(rows[0]);
     return res.sendStatus(404);
   } catch (err) {
-    console.log("<<<<<<<< erro");
-    console.log(err);
+    return res.sendStatus(err);
   }
 };
 
@@ -35,8 +33,7 @@ export const postCustomer = async (req, res) => {
     );
     return res.status(201).send("termino");
   } catch (err) {
-    console.log("<<<<<<<< erro");
-    console.log(err);
+    return res.sendStatus(err);
   }
 };
 
@@ -46,9 +43,20 @@ export const putCustomer = async (req, res) => {
   try {
     const { rows } = await db.query("SELECT * FROM customers WHERE id = $1 LIMIT 1;", [id]);
     if (!rows.length) return res.sendStatus(404);
+
     const user = rows[0];
+    const anotherUser = await db.query("SELECT * FROM customers WHERE cpf = $1;", [user.cpf]);
+    if (anotherUser.rows.length > 1) return res.sendStatus(409);
+
+    await db.query("UPDATE customers SET name = $1, phone = $2, birthday = $3 WHERE id = $4;", [
+      name,
+      phone,
+      birthday,
+      id,
+    ]);
+    return res.sendStatus(200);
   } catch (err) {
-    console.log("Errro <><><><><><>");
+    return res.sendStatus(err);
   }
 };
 
