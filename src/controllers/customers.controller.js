@@ -11,10 +11,15 @@ export const getCustomers = async (req, res) => {
 };
 
 export const getCustomer = async (req, res) => {
-  const { id } = req.query;
-  console.log("id>>");
-  console.log(id);
-  res.status(200).send(customerToFind);
+  const id = req.params.id;
+  try {
+    const { rows } = await db.query("SELECT * FROM customers WHERE id = $1 LIMIT 1;", [id]);
+    if (rows.length) return res.status(200).send(rows[0]);
+    return res.sendStatus(404);
+  } catch (err) {
+    console.log("<<<<<<<< erro");
+    console.log(err);
+  }
 };
 
 export const postCustomer = async (req, res) => {
@@ -28,22 +33,23 @@ export const postCustomer = async (req, res) => {
       VALUES ($1, $2, $3, $4)`,
       [name, phone, cpf, birthday]
     );
-    res.status(201).send("termino");
+    return res.status(201).send("termino");
   } catch (err) {
     console.log("<<<<<<<< erro");
     console.log(err);
   }
 };
 
-const customerToChange = {
-  name: "João Alfredo",
-  phone: "21998899222",
-  cpf: "01234567890",
-  birthday: "1992-10-05",
-};
-
 export const putCustomer = async (req, res) => {
-  res.status(200).send(customerToChange);
+  const { name, phone, cpf, birthday } = req.body;
+  const id = req.params.id;
+  try {
+    const { rows } = await db.query("SELECT * FROM customers WHERE id = $1 LIMIT 1;", [id]);
+    if (!rows.length) return res.sendStatus(404);
+    const user = rows[0];
+  } catch (err) {
+    console.log("Errro <><><><><><>");
+  }
 };
 
 export default { getCustomers, getCustomer, postCustomer, putCustomer };

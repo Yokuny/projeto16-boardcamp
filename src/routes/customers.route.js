@@ -7,6 +7,6 @@ const customers = Router();
 customers.get("/customers", route.getCustomers);
 customers.get("/customers/:id", route.getCustomer);
 customers.post("/customers", validate(customersSchema), route.postCustomer);
-customers.put("/customers/:id", route.putCustomer);
+customers.put("/customers/:id", validate(customersSchema), route.putCustomer);
 
 export default customers;
