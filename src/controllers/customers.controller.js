@@ -23,7 +23,7 @@ export const getCustomer = async (req, res) => {
 export const postCustomer = async (req, res) => {
   const { name, phone, cpf, birthday } = req.body;
   try {
-    const { rows } = await db.query("SELECT * FROM customers WHERE name = $1 LIMIT 1;", [name]);
+    const { rows } = await db.query("SELECT * FROM customers WHERE cpf = $1 LIMIT 1;", [cpf]);
     if (rows.length) return res.sendStatus(409);
 
     await db.query(
