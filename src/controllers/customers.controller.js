@@ -1,4 +1,5 @@
 import db from "../database/database.connection.js";
+import dayjs from "dayjs";
 
 export const getCustomers = async (req, res) => {
   try {
@@ -29,7 +30,7 @@ export const postCustomer = async (req, res) => {
     await db.query(
       `INSERT INTO customers (name, phone, cpf, birthday)
       VALUES ($1, $2, $3, $4)`,
-      [name, phone, cpf, birthday]
+      [name, phone, cpf, dayjs(birthday).format("YYYY-MM-DD")]
     );
     return res.status(201).send("termino");
   } catch (err) {
