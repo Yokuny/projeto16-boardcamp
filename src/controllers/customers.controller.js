@@ -32,7 +32,7 @@ export const postCustomer = async (req, res) => {
       VALUES ($1, $2, $3, $4)`,
       [name, phone, cpf, dayjs(birthday).format("YYYY-MM-DD")]
     );
-    return res.status(201).send("termino");
+    return res.sendStatus(201);
   } catch (err) {
     return res.sendStatus(err);
   }
@@ -45,13 +45,13 @@ export const putCustomer = async (req, res) => {
     const { rows } = await db.query("SELECT * FROM customers WHERE id = $1 LIMIT 1;", [id]);
     if (!rows.length) return res.sendStatus(404);
 
-    const user = rows[0];
-    const anotherUser = await db.query("SELECT * FROM customers WHERE cpf = $1;", [user.cpf]);
+    const anotherUser = await db.query("SELECT * FROM customers WHERE cpf = $1;", [cpf]);
     if (anotherUser.rows.length > 1) return res.sendStatus(409);
 
-    await db.query("UPDATE customers SET name = $1, phone = $2, birthday = $3 WHERE id = $4;", [
+    await db.query("UPDATE customers SET name = $1, phone = $2, cpf = $3 birthday = $4 WHERE id = $5;", [
       name,
       phone,
+      cpf,
       birthday,
       id,
     ]);
