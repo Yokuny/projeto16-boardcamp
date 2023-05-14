@@ -52,7 +52,7 @@ export const putCustomer = async (req, res) => {
       name,
       phone,
       cpf,
-      birthday,
+      dayjs(birthday).format("YYYY-MM-DD"),
       id,
     ]);
     return res.sendStatus(200);
