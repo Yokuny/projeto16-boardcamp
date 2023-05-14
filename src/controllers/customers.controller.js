@@ -55,14 +55,15 @@ export const postCustomer = async (req, res) => {
 export const putCustomer = async (req, res) => {
   const { name, phone, cpf, birthday } = req.body;
   const id = req.params.id;
+
   try {
-    const { rows } = await db.query("SELECT * FROM customers WHERE id = $1 LIMIT 1;", [id]);
+    const { rows } = await db.query("SELECT * FROM customers WHERE id = $1 AND cpf=$2 LIMIT 1;", [id, cpf]);
     if (!rows.length) return res.sendStatus(404);
 
-    const anotherUser = await db.query("SELECT * FROM customers WHERE cpf = $1;", [cpf]);
-    if (anotherUser.rows.length > 1) return res.sendStatus(409);
+    const anotherUser = await db.query("SELECT * FROM customers WHERE cpf = $1 AND id <> $2;", [cpf, id]);
+    if (anotherUser.rows.length > 0) return res.sendStatus(409);
 
-    await db.query("UPDATE customers SET name = $1, phone = $2, cpf = $3 birthday = $4 WHERE id = $5;", [
+    await db.query("UPDATE customers SET name = $1, phone = $2, cpf = $3, birthday = $4 WHERE id = $5;", [
       name,
       phone,
       cpf,
