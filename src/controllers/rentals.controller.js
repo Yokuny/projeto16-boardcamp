@@ -30,7 +30,7 @@ export const postRental = async (req, res) => {
 
     res.sendStatus(201);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.sendStatus(500);
   }
 };
 
