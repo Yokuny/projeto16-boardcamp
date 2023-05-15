@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 //services
 async function getAllRentals() {
   const searchQuery = `
-    SELECT r.*, c.name AS clientName, g.name AS gameName 
+    SELECT r.*, c.name, g.name AS gameName 
     FROM rentals AS r
     JOIN customers AS c ON c.id = r."customerId"
     JOIN games AS g ON g.id = r."gameId";
@@ -24,7 +24,7 @@ function formatRentalData(data) {
     delayFee: obj.delayFee,
     customer: {
       id: obj.customerId,
-      name: obj.clientName,
+      name: obj.name,
     },
     game: {
       id: obj.gameId,
@@ -148,5 +148,5 @@ export const deleteRental = async (req, res) => {
     res.sendStatus(500);
   }
 };
-  
+
 export default { getRentals, postRental, postRentalFinish, deleteRental };
