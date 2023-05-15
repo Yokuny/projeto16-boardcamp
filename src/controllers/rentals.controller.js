@@ -137,7 +137,7 @@ export const deleteRental = async (req, res) => {
     const { rows: rent } = await db.query(findQuery, [id]);
     if (!rent.length) return res.sendStatus(404);
 
-    if (rent[0].returnDate) return res.sendStatus(400);
+    if (!rent[0].returnDate) return res.sendStatus(400);
 
     const DeleteQuery = `DELETE FROM rentals WHERE id=$1`;
     await db.query(DeleteQuery, [id]);
