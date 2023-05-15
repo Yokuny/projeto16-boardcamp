@@ -32,7 +32,7 @@ function formatRentalData(data) {
     },
   }));
 }
-export const getRentals = async (req, res) => {
+const getRentals = async (req, res) => {
   try {
     const data = await getAllRentals();
     const formattedData = formatRentalData(data);
@@ -73,7 +73,7 @@ const insertRental = async (rental) => {
     rental.originalPrice,
   ]);
 };
-export const postRental = async (req, res) => {
+const postRental = async (req, res) => {
   const { customerId, gameId, daysRented } = req.body;
   try {
     const game = await getGameById(gameId);
@@ -108,7 +108,7 @@ const calculateDelayFee = (rentDate, returnDate, originalPrice, daysRented) => {
   return dayPast > daysRented ? (dayPast - daysRented) * pricePerDay : 0;
 };
 
-export const postRentalFinish = async (req, res) => {
+const postRentalFinish = async (req, res) => {
   const id = req.params.id;
   try {
     const findQuery = `SELECT * FROM rentals WHERE id=$1`;
@@ -130,7 +130,7 @@ export const postRentalFinish = async (req, res) => {
   }
 };
 
-export const deleteRental = async (req, res) => {
+const deleteRental = async (req, res) => {
   const id = req.params.id;
   try {
     const findQuery = `SELECT * FROM rentals WHERE id=$1`;
