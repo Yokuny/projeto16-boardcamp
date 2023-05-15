@@ -148,5 +148,5 @@ export const deleteRental = async (req, res) => {
     res.sendStatus(500);
   }
 };
-
+  
 export default { getRentals, postRental, postRentalFinish, deleteRental };

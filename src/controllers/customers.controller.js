@@ -59,16 +59,17 @@ export const postCustomer = async (req, res) => {
 export const putCustomer = async (req, res) => {
   const { name, phone, cpf, birthday } = req.body;
   const id = req.params.id;
-  const findQuery = `SELECT * FROM customers WHERE id = $1 AND cpf=$2 LIMIT 1;`;
+
+  const findQuery = `SELECT * FROM customers WHERE id = $1 LIMIT 1;`;
   const cpfQuery = `SELECT * FROM customers WHERE cpf = $1 AND id <> $2;`;
   const updateQuery = `UPDATE customers SET name = $1, phone = $2, cpf = $3, birthday = $4 WHERE id = $5;`;
 
   try {
-    const { rows } = await db.query(findQuery, [id, cpf]);
+    const { rows } = await db.query(findQuery, [id]);
     if (!rows.length) return res.sendStatus(404);
 
-    const anotherUser = await db.query(cpfQuery, [cpf, id]);
-    if (anotherUser.rows.length > 0) return res.sendStatus(409);
+    const { rows: other } = await db.query(cpfQuery, [cpf, id]);
+    if (other.length > 0) return res.sendStatus(409);
 
     await db.query(updateQuery, [name, phone, cpf, dayjs(birthday).format("YYYY-MM-DD"), id]);
 
