@@ -4,10 +4,10 @@ import dayjs from "dayjs";
 //services
 async function getAllRentals() {
   const searchQuery = `
-    SELECT r.*, c.name, g.name AS gameName 
-    FROM rentals AS r
-    JOIN customers AS c ON c.id = r."customerId"
-    JOIN games AS g ON g.id = r."gameId";
+    SELECT r.*, c.name, g.name AS "gameName"
+    FROM rentals r
+    JOIN customers c ON c.id = r."customerId"
+    JOIN games g ON g.id = r."gameId";
   `;
   const { rows } = await db.query(searchQuery);
   return rows;
