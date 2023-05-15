@@ -58,7 +58,7 @@ export const putCustomer = async (req, res) => {
 
   try {
     const { rows } = await db.query("SELECT * FROM customers WHERE id = $1 AND cpf=$2 LIMIT 1;", [id, cpf]);
-    if (!rows.length) return res.sendStatus(409); //aqui deveria ser codgio 404
+    if (!rows.length) return res.sendStatus(404);
 
     const anotherUser = await db.query("SELECT * FROM customers WHERE cpf = $1 AND id <> $2;", [cpf, id]);
     if (anotherUser.rows.length > 0) return res.sendStatus(409);
@@ -70,6 +70,7 @@ export const putCustomer = async (req, res) => {
       dayjs(birthday).format("YYYY-MM-DD"),
       id,
     ]);
+
     return res.sendStatus(200);
   } catch (err) {
     return res.sendStatus(err);
